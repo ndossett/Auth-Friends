@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import axios from 'axios';
 
 
-const Login = () => {
+const Login = ({onChange, login, loginSubmit, username, password}) => {
     const [credentials, setCredentials] = useState({
         username: '',
         password: '',
     });
+
+    const [isLoading, setIsLoading] = useState(false)
 
     onChange = e => {
         setCredentials({
@@ -27,22 +29,27 @@ const Login = () => {
             });
     };
     
+    loginSubmit = () => {
+        login(credentials)
+        setIsLoading(true)
+    }
+
     return (
         <div>
             <form>
                 <input
                     type='text'
                     name = 'username'
-                    value={}
-                    onChange={}
+                    value={username}
+                    onChange={onChange}
                 />
                 <input
                     type='password'
                     name = 'password'
-                    value={}
-                    onChange={}
+                    value={password}
+                    onChange={onChange}
                 />
-                <button>Log In</button>
+                <button onClick={loginSubmit} isLoading={isLoading}>Log In</button>
             </form>
         </div>
     )
