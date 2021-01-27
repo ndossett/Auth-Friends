@@ -1,55 +1,64 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom'
 import axios from 'axios';
 
 
-const Login = ({onChange, login, loginSubmit, username, password}) => {
+const Login = () => {
     const [credentials, setCredentials] = useState({
         username: '',
         password: '',
     });
 
-    const [isLoading, setIsLoading] = useState(false)
+    const history = useHistory()
 
-    onChange = e => {
+    // const [isLoading, setIsLoading] = useState(false)
+
+     const onChange = e => {
         setCredentials({
             ...credentials, [e.target.name] : e.target.value
         });
     };
 
-    login = e => {
-        e.preventDefault();
+    const login = () => {
         axios
             .post('http://localhost:5000/api/login', credentials)
             .then(res => {
+                console.log(res.data)
                 localStorage.setItem('token', res.data.payload);
-                history.push('/protected');
+                history.push('/friends');
             })
             .catch(err => {
                 console.log(err);
             });
     };
     
-    loginSubmit = () => {
-        login(credentials)
-        setIsLoading(true)
+    const loginSubmit = e => {
+        e.preventDefault();
+        login()
+        // setIsLoading(true)
     }
 
     return (
         <div>
-            <form>
+         <div className="App">
+            <header className="App-header">
+            <h1>Find your Friends</h1>
+            </header>
+         </div>
+            <form onSubmit={loginSubmit}>
                 <input
                     type='text'
                     name = 'username'
-                    value={username}
+                    value={credentials.username}
                     onChange={onChange}
                 />
                 <input
                     type='password'
                     name = 'password'
-                    value={password}
+                    value={credentials.password}
                     onChange={onChange}
                 />
-                <button onClick={loginSubmit} isLoading={isLoading}>Log In</button>
+                <button type='submit'>Log In</button>
             </form>
         </div>
     )

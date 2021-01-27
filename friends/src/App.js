@@ -1,13 +1,19 @@
-
-import './App.css';
+import React from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import Login from './components/Login';
+import PrivateRoute from './components/PrivateRoute';
+import ProtectedFriend from './components/ProtectedFriend'
 
 function App() {
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-       <h1>Hello World</h1>
-      </header>
-    </div>
+    <Router>
+    <Switch>
+      <Route path='/friends'> <PrivateRoute component={ProtectedFriend}/> </Route> 
+      <Route path='/' component={Login}/>
+    </Switch>
+    </Router>
   );
 }
 
